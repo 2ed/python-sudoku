@@ -102,35 +102,6 @@ def zeros(matr): # Returns list of existing zeros.
 			if matr[i][j] == 0:
 				z.append( i*10 + j )	
 	return z
-"""
-def scansec(matr, sec):
-	occ = []
-	size = int(math.sqrt(len(matr)))
-	for i in range(len(matr)) :
-		occ.append((sec / size * size + i / size) * 10 \
-				+ sec % size * size + i % size )
-	return occ
-
-def scancol(matr, col):
-	occ = []
-	for i in range(len(matr)) :
-		occ.append(i * 10 + col)
-	return occ
-
-def scanrow(matr, row):
-	occ = []
-	for i in range(len(matr[row])):
-		occ.append(row * 10 + i)
-	return occ
-	
-def scanscope(matr, pos):
-	size = int(math.sqrt(len(matr)))
-	row = pos / 10
-	col = pos % 10
-	occ = list(set(scanrow(matr, row) + scancol (matr, col) + \
-		scansec(matr, row / 3 * 3 + col / 3)))
-	occ.sort()
-	return occ """
 	
 def whichnum(matr, pos): # Wich numbers can be placed at pos.
 	occ = []
@@ -144,43 +115,50 @@ def whichnum(matr, pos): # Wich numbers can be placed at pos.
 def simplecheck(matr, pos): 
 	avail = whichnum(matr, pos)
 	if len(avail) == 1:
-		print 'one',avail[0],pos
+		#print 'one',avail[0],pos
 		return avail[0]
 	elif len(avail) == 0:
 		return 10
 	else:
 		for item in avail:
-			for rownum in inrow(matr, pos / 10):
-				if rownum == 0 and (item in whichnum(matr, rownum)):
+			for rownum in inrow(matr, pos / 10, 0):
+				if item in whichnum(matr, rownum):
 					break
 			else:
-				print 'two',item,pos
+				#print 'two',item,pos
 				return item
-			for colnum in incol(matr, pos % 10):
-				if colnum == 0 and (item in whichnum(matr, colnum)):
+			for colnum in incol(matr, pos % 10, 0):
+				if item in whichnum(matr, colnum):
 					break
 			else:
-				print 'three',item,pos
+				#print 'three',item,pos
 				return item
-			for secnum in insec(matr, pos):
-				if secnum == 0 and (item in whichnum(matr, secnum)):
+			for secnum in insec(matr, pos / 30 * 3 + pos % 10 / 3 , 0): 
+				if item in whichnum(matr, secnum):
 					break
 			else:
-				print 'four',item,pos
+				#print 'four',item,pos
 				return item					
 
-x = a
-pt(x)
-
-errors = []
-for z in [2, 6, 8]:#zeros(x):
-	print 'Now', z
-	res = simplecheck( x , z )
-	if res and res != 10 :
-		x[ z / 10 ][ z % 10 ] = res
-	elif res == 10 :
-		errors.append(z)
+def solve(x):
+	pt(x)
+	errors = []
+	while True:
+		zero = zeros(x)
+		for z in zero:
+			res = simplecheck( x , z )
+			if res and res != 10 :
+				x[ z / 10 ][ z % 10 ] = res
+			elif res == 10 :
+				errors.append(z)
+		if len(zeros(x)) == 0:
+			print "Done! ^ v^\n"
+			break
+		elif len(zeros(x)) == len(zero):
+			print "I'm stuck ._.\n"
+			break
+	pt(x)
+	if len(errors) > 0 :
+		print "Errors: ", errors
 	
-
-pt(x)
-print errors
+solve(a)
