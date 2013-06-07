@@ -54,8 +54,6 @@ def pt(matr) : # Prints out the matrix.
 	for i in range(len(matr)) :
 		for j in range(len(matr[i])) :
 			s = s + str(matr[i][j]) + ' '
-			#c1 += 1
-			#if c1 == 3 or c1 == 6 :
 			if (j+1) % size == 0 and j != size*size - 1 :
 				s = s + '| '
 		print s
@@ -64,21 +62,21 @@ def pt(matr) : # Prints out the matrix.
 			print " ------|-------|------"
 	print
 		
-def inrow( matr, row, num ) :
+def inrow( matr, row, num ) : # Occurances of a number in a row.
 	occ = []
 	for i in range(len(matr[row])):
 		if matr[row][i] == num :
 			occ.append(row * 10 + i)
 	return occ
 	
-def incol( matr, col, num ) :
+def incol( matr, col, num ) : # Occurances of a number in a column.
 	occ = []
 	for i in range(len(matr)) :
 		if matr[i][col] == num :
 			occ.append(i * 10 + col)
 	return occ
 
-def insec( matr, sec, num ) :
+def insec( matr, sec, num ) : # Occurances in sector.
 	occ = []
 	size = int(math.sqrt(len(matr)))
 	for i in range(len(matr)) :
@@ -86,7 +84,7 @@ def insec( matr, sec, num ) :
 			occ.append((sec / size * size + i / size) * 10 + sec % size * size + i % size )
 	return occ
 
-def inscope( matr, pos, num ):
+def inscope( matr, pos, num ): # Occurances is sector + row + col.
 	size = int(math.sqrt(len(matr)))
 	row = pos / 10
 	col = pos % 10
@@ -96,7 +94,10 @@ def inscope( matr, pos, num ):
 
 #def isleft( matr, pos, num)
 	
-
+def zeros(matr, zs = []): # Return list of existing zeros.
+	
+	return zs
+	
 pt(h)
 occ = inscope( h, 5, 0)
 print occ, len(occ)
